@@ -2,7 +2,7 @@
 
 Silas' Arch Dotfiles
 
-This repository contains configuration files, or *dotfiles* for many programs which I use in my Arch Linux install. I hope to soon migrate all of my configuration to this repository, as well as to automate the configuration process.
+This repository contains configuration files, or *dotfiles* for many programs which I use in my Arch Linux install. I hope to soon migrate all of my configuration to this repository.
 
 ## Dependencies
 
