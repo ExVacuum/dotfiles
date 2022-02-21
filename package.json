@@ -1,0 +1,31 @@
+{
+  "name": "dotfiles",
+  "version": "1.0.0",
+  "description": "Silas' Arch Dotfiles",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ExVacuum/dotfiles.git"
+  },
+  "author": "Silas Bartha",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/ExVacuum/dotfiles/issues"
+  },
+  "homepage": "https://github.com/ExVacuum/dotfiles#readme",
+  "dependencies": {
+    "chalk": "^5.0.0",
+    "chalk-template": "^0.3.1",
+    "commander": "^9.0.0"
+  },
+  "bin": {
+    "siconf": "./index.js"
+  }
+}

@@ -1,0 +1,39 @@
+#!/bin/sh
+
+user=`whoami`
+if [ "$user" == "root" ]; then
+    printf "This script cannot be run as root!\n"
+    exit 1
+fi
+
+gitpkg=`pacman -Q git`
+devpkg=`pacman -Qg base-devel`
+if [ -z "$gitpkg" ] || [ -z "$devpkg" ]; then
+    printf "Installing missing yay dependencies:\n"
+    su -c "pacman -S --needed --noconfirm git base-devel"
+fi
+
+yaypkg=`pacman -Q yay`
+if [ -z "$yaypkg" ]; then
+    printf "Installing yay:\n"
+    git clone https://aur.archlinux.org/yay-bin.git
+    cd yay-bin
+    makepkg -si
+    cd ..
+    rm -rf yay-bin
+fi
+
+pypkg=`pacman -Q python`
+pippkg=`pacman -Q python-pip`
+curlpkg=`pacman -Q curl`
+nodepkg=`which node`
+if [ -z "$pypkg" ] || [ -z "$pippkg" ] || [ -z "$curlpkg" ] || [ -z "$nodepkg" ]; then
+    yay -S --needed --noconfirm python python-pip curl nodejs
+fi
+
+scpkg=`which siconf`
+if [ -z "$scpkg" ]; then
+    su -c "npm i -g"
+fi
+
+printf "You are ready to use my configuration repository!\n"
