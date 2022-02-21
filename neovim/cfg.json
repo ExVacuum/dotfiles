@@ -1,6 +1,6 @@
 {
     "dependencies": {
-        "yay": "neovim ccls lua-language-server rust-analyzer",
+        "yay": "neovim ccls lua-language-server rust-analyzer yarn ripgrep",
         "npm": "typescript typescript-language-server vscode-langservers-extracted remark-language-server remark bash-language-server",
         "pip": "python-lsp-server",
         "other": [
