@@ -10,27 +10,24 @@ call plug#begin(stdpath('data') . '/plugged')
     
     " ARM Syntax
     Plug 'ARM9/arm-syntax-vim'
-    
-    " Limelight
-    Plug 'junegunn/limelight.vim'
-    
+   
     " Markdown Live Preview
     Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-    
+
+    " Limelight
+    Plug 'junegunn/limelight.vim'
+       
     " Lua Status Line
     Plug 'nvim-lualine/lualine.nvim'
     
     " Lua Tab Line
     Plug 'seblj/nvim-tabline'
     
-    " Lua Tree Viewer
-    Plug 'kyazdani42/nvim-tree.lua'
+    " Tree Viewer
+    Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
     
     " Icons for the UI
     Plug 'kyazdani42/nvim-web-devicons'
-
-    " Autosave
-    Plug 'Pocco81/AutoSave.nvim'
 
     " Discord Rich Presence
     Plug 'andweeb/presence.nvim'
@@ -64,12 +61,18 @@ call plug#begin(stdpath('data') . '/plugged')
 
     " Colorize Color Codes
     Plug 'norcalli/nvim-colorizer.lua'
-    
-    " Markdown Internal Links
-    Plug 'jakewvincent/mkdnflow.nvim'
 
-    " In-editor Markdown Preview
-    Plug 'ellisonleao/glow.nvim'
+    " Pop-up Terminal
+    Plug 's1n7ax/nvim-terminal'
+  
+    " NUI
+    Plug 'MunifTanjim/nui.nvim' 
+
+    " Window Picker
+    Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
+
+    " LaTeX Live Preview
+    Plug 'donRaphaco/neotex', { 'for': 'tex' }
 call plug#end()                        
 
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -98,9 +101,18 @@ set expandtab " Replace tabs with spaces
 
 set autowriteall " Autosave on buffer switch
 
+set autoread " Auto-load changed file content
+
+set showtabline=2 " Show tabs
+
 " Keybinds for switching tabs
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
+
+" Escape Terminal Mode
+tnoremap <Esc> <C-\><C-n>
+
+let g:tex_flavor = "latex"
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -108,6 +120,7 @@ nnoremap <C-Right> :tabnext<CR>
 "
 """"""""""""""""""""""""""""""""""""""""""""""""
 
+set termguicolors
 colorscheme nordfox
 
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -137,18 +150,106 @@ EOF
 """"""""""""""""""""""""""""""""""""""""""""""""
 
 lua << EOF
+
+local signs = { Error = "", Warn = "", Hint = "", Info = "" }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
 --Enable (broadcasting) snippet capability for completion
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+local sumneko_binary_path = vim.fn.exepath('lua-language-server')
+local sumneko_root_path = vim.fn.fnamemodify(sumneko_binary_path, ':h:h:h')
+
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+
 local lspconfig = require'lspconfig'
-lspconfig.ccls.setup(coq.lsp_ensure_capabilities())  -- CCLS: C/C++
-lspconfig.tsserver.setup(coq.lsp_ensure_capabilities()) -- TSSERVER: TypeScript
-lspconfig.cssls.setup(coq.lsp_ensure_capabilities()) -- CSSLS: CSS
-lspconfig.remark_ls.setup(coq.lsp_ensure_capabilities()) -- remark_ls: Markdown
-lspconfig.bashls.setup(coq.lsp_ensure_capabilities()) -- bashls: Bash
-lspconfig.pylsp.setup(coq.lsp_ensure_capabilities()) -- pylsp: Python
-lspconfig.sumneko_lua.setup(coq.lsp_ensure_capabilities()) -- sumneko_lua: lua
+lspconfig.ccls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach}))  -- CCLS: C/C++
+lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- TSSERVER: TypeScript
+lspconfig.cssls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- CSSLS: CSS
+lspconfig.remark_ls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- remark_ls: Markdown
+lspconfig.bashls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- bashls: Bash
+lspconfig.pylsp.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- pylsp: Python
+lspconfig.sumneko_lua.setup(coq.lsp_ensure_capabilities({
+    on_attach=on_attach,
+    settings = {
+        Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = 'LuaJIT',
+                -- Setup your lua path
+                path = runtime_path,
+            },
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = {
+                    'vim',
+                    'workspace',
+                    'configurations',
+                    'project',
+                    'kind',
+                    'language',
+                    'targetdir',
+                    'files',
+                    'filter',
+                    'defines',
+                    'symbols',
+                    'optimize',
+                    'links',
+                    'libdirs',
+                    'prebuildcommands',
+                    'buildcommands',
+                    'postbuildcommands',
+                    'newaction',
+                },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false,
+            },
+        },
+    }
+})) -- sumneko_lua: lua
 lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities({ -- rust_analyzer: rust
     on_attach=on_attach,
     settings = {
@@ -166,6 +267,53 @@ lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities({ -- rust_analyzer: ru
         }
     }
 })) -- rust_analyzer: rust
+lspconfig.java_language_server.setup(coq.lsp_ensure_capabilities({
+    on_attach=on_attach,
+    cmd = {'java-language-server'},
+})) -- java_language_server: Java
+lspconfig.solargraph.setup(coq.lsp_ensure_capabilities({
+    on_attach=on_attach,
+    filetypes = { "ruby" }
+})) -- solargraph: ruby
+local pid = vim.fn.getpid()
+local omnisharp_bin = "/opt/omnisharp/run"
+lspconfig.omnisharp.setup(coq.lsp_ensure_capabilities({
+    on_attach=on_attach,
+    cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
+    root_dir = lspconfig.util.root_pattern("*.csproj","*.sln"),
+    ...
+}))
+lspconfig.texlab.setup(coq.lsp_ensure_capabilities({
+    on_attach=on_attach,
+    cmd = { "texlab" },
+    filetypes = { "tex", "bib" },
+    settings = {
+        texlab = {
+            auxDirectory = ".",
+            bibtexFormatter = "texlab",
+            build = {
+              args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+              executable = "latexmk",
+              forwardSearchAfter = false,
+              onSave = false
+            },
+            chktex = {
+              onEdit = false,
+              onOpenAndSave = false
+            },
+            diagnosticsDelay = 300,
+            formatterLineLength = 80,
+            forwardSearch = {
+              args = {}
+            },
+            latexFormatter = "latexindent",
+            latexindent = {
+              modifyLineBreaks = false
+            }
+        }
+    },
+    single_file_support = true
+})) --texlab: LaTeX
 EOF
 
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -247,7 +395,7 @@ require('lualine').setup {
     theme = 'nightfox',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
-    disabled_filetypes = {'NvimTree', 'vim-plug'},
+    disabled_filetypes = {'CHADTree', 'vim-plug', 'Trouble', 'terminal'},
     always_divide_middle = true,
   },
   sections = {
@@ -285,7 +433,6 @@ require('tabline').setup{
     separator = "▌",          -- Separator icon on the left side
     padding = 3,              -- Prefix and suffix space
     color_all_icons = false,  -- Color devicons in active and inactive tabs
-    always_show_tabs = true,  -- Always show tabline
     right_separator = false,  -- Show right separator on the last tab
     show_index = false,       -- Shows the index of tab before filename
     show_icon = true,         -- Shows the devicon
@@ -299,170 +446,9 @@ EOF
 "
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-let g:nvim_tree_git_hl = 1 "0 by default, will enable file highlight for git attributes (can be used without the icons).
+nnoremap <leader>n <cmd>CHADopen<cr>
 
-let g:nvim_tree_highlight_opened_files = 1 "0 by default, will enable folder and file icon highlight for opened files/directories.
-
-let g:nvim_tree_root_folder_modifier = ':~' "This is the default. See :help filename-modifiers for more options
-
-let g:nvim_tree_icon_padding = ' ' "one space by default, used for rendering the space between the icon and the filename. Use with caution, it could break rendering if you set an empty string depending on your font.
-
-let g:nvim_tree_symlink_arrow = ' >> ' " defaults to ' ➛ '. used as a separator between symlinks' source and target.
-
-let g:nvim_tree_window_picker_exclude = {
-    \   'filetype': [
-    \     'notify',
-    \     'packer',
-    \     'qf'
-    \   ],
-    \   'buftype': [
-    \     'terminal'
-    \   ]
-    \ }
-
-" Dictionary of buffer option names mapped to a list of option values that
-" indicates to the window picker that the buffer's window should not be
-" selectable.
-let g:nvim_tree_special_files = { 'README.md': 1, 'Makefile': 1, 'MAKEFILE': 1 } " List of filenames that gets highlighted with NvimTreeSpecialFile
-let g:nvim_tree_show_icons = {
-    \ 'git': 0,
-    \ 'folders': 1,
-    \ 'files': 1,
-    \ 'folder_arrows': 0,
-    \ }
-
-"If 0, do not show the icons for one of 'git' 'folder' and 'files'
-"1 by default, notice that if 'files' is 1, it will only display
-"if nvim-web-devicons is installed and on your runtimepath.
-"if folder is 1, you can also tell folder_arrows 1 to show small arrows next to the folder icons.
-"but this will not work when you set indent_markers (because of UI conflict)
-
-" default will show icon by default if no icon is provided
-" default shows no icon by default
-let g:nvim_tree_icons = {
-    \ 'default': '',
-    \ 'symlink': '',
-    \ 'git': {
-    \   'unstaged': "✗",
-    \   'staged': "✓",
-    \   'unmerged': "",
-    \   'renamed': "➜",
-    \   'untracked': "★",
-    \   'deleted': "",
-    \   'ignored': "◌"
-    \   },
-    \ 'folder': {
-    \   'arrow_open': "",
-    \   'arrow_closed': "",
-    \   'default': "",
-    \   'open': "",
-    \   'empty': "",
-    \   'empty_open': "",
-    \   'symlink': "",
-    \   'symlink_open': "",
-    \   }
-    \ }
-
-nnoremap <C-n> :NvimTreeToggle<CR>
-nnoremap <leader>r :NvimTreeRefresh<CR>
-nnoremap <leader>n :NvimTreeFindFile<CR>
-
-set termguicolors
-
-" a list of groups can be found at `:help nvim_tree_highlight`
-highlight NvimTreeFolderIcon guibg=blue
-
-lua << EOF
--- following options are the default
--- each of these are documented in `:help nvim-tree.OPTION_NAME`
-require'nvim-tree'.setup {
-  disable_netrw       = true,
-  hijack_netrw        = true,
-  open_on_setup       = false,
-  ignore_ft_on_setup  = {},
-  auto_close          = false,
-  open_on_tab         = false,
-  hijack_cursor       = false,
-  update_cwd          = false,
-  update_to_buf_dir   = {
-    enable = true,
-    auto_open = true,
-  },
-  diagnostics = {
-    enable = false,
-    icons = {
-      hint = "",
-      info = "",
-      warning = "",
-      error = "",
-    }
-  },
-  update_focused_file = {
-    enable      = false,
-    update_cwd  = false,
-    ignore_list = {}
-  },
-  system_open = {
-    cmd  = nil,
-    args = {}
-  },
-  filters = {
-    dotfiles = false,
-    custom = {}
-  },
-  git = {
-    enable = true,
-    ignore = true,
-    timeout = 500,
-  },
-  view = {
-    width = 30,
-    height = 30,
-    hide_root_folder = false,
-    side = 'left',
-    auto_resize = false,
-    mappings = {
-      custom_only = false,
-      list = {}
-    },
-    number = false,
-    relativenumber = false,
-    signcolumn = "yes"
-  },
-  trash = {
-    cmd = "trash",
-    require_confirm = true
-  }
-}
-EOF
-
-""""""""""""""""""""""""""""""""""""""""""""""""
-"
-" AUTO SAVE
-"
-""""""""""""""""""""""""""""""""""""""""""""""""
-
-lua << EOF
-local autosave = require("autosave")
-
-autosave.setup(
-    {
-        enabled = true,
-        execution_message = "autosaved.",
-        events = {"InsertLeave", "TextChanged"},
-        conditions = {
-            exists = true,
-            filename_is_not = {'/etc/*'},
-            filetype_is_not = {},
-            modifiable = true
-        },
-        write_all_buffers = false,
-        on_off_commands = true,
-        clean_command_line_interval = 0,
-        debounce_delay = 135
-    }
-)
-EOF
+let g:chadtree_settings = { 'theme.text_colour_set': 'env' }
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -471,9 +457,41 @@ EOF
 """"""""""""""""""""""""""""""""""""""""""""""""
 
 lua << EOF
-local alpha = require("alpha")
+local env = getfenv(1)
+-- see if the file exists
+function file_exists(file)
+  local f = io.open(file, "rb")
+  if f then f:close() end
+  return f ~= nil
+end
 
-alpha.setup(require'alpha.themes.startify'.config)
+-- get all lines from a file, returns an empty 
+-- list/table if the file does not exist
+function lines_from(file)
+  if not file_exists(file) then return {} end
+  local lines = {}
+  for line in io.lines(file) do 
+    lines[#lines + 1] = line
+  end
+  return lines
+end
+
+local handle = io.popen('printf "$XDG_CONFIG_HOME"')
+local configdir = handle:read("*a")
+local alpha = require("alpha")
+local dashboard = require'alpha.themes.dashboard' 
+dashboard.section.header.val = lines_from(configdir .. '/nvim/headerfile')
+dashboard.section.buttons.val = {
+    dashboard.button( "e", "  New file" , ":ene <BAR> startinsert <CR>"),
+    dashboard.button( "q", "  Quit NVIM" , ":qa<CR>"),
+}
+handle = io.popen('fortune')
+local fortune = handle:read("*a")
+handle:close()
+dashboard.section.footer.val = fortune
+dashboard.config.opts.noautocmd = true
+vim.cmd[[autocmd User AlphaReady echo 'ready']]
+alpha.setup(dashboard.config)
 EOF
 
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -550,7 +568,7 @@ nnoremap <leader>xx <cmd>TroubleToggle<cr>
 
 lua << EOF
   require("trouble").setup {
-    position = "bottom", -- position of the list can be: bottom, top, left, right
+    position = "right", -- position of the list can be: bottom, top, left, right
     height = 10, -- height of the trouble list when position is top or bottom
     width = 50, -- width of the list when position is left or right
     icons = true, -- use devicons for filenames
@@ -629,63 +647,50 @@ lua <<EOF
 	            RRGGBB   = true,         -- #RRGGBB hex codes
 	            names    = true,         -- "Name" codes like Blue
                 RRGGBBAA = true,        -- #RRGGBBAA hex codes
-	            rgb_fn   = false,        -- CSS rgb() and rgba() functions
-	            hsl_fn   = false,        -- CSS hsl() and hsla() functions
-	            css      = false,        -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-	            css_fn   = false,        -- Enable all CSS *functions*: rgb_fn, hsl_fn
+	            rgb_fn   = true,        -- CSS rgb() and rgba() functions
+	            hsl_fn   = true,        -- CSS hsl() and hsla() functions
+	            css      = true,        -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+	            css_fn   = true,        -- Enable all CSS *functions*: rgb_fn, hsl_fn
 	            -- Available modes: foreground, background
-	            mode     = 'background' -- Set the display mode.
+	            mode     = 'foreground' -- Set the display mode.
         }
     )
 EOF
 
-
-""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" MARKDOWN FLOW
+" TERMINAL TOGGLE
 "
-""""""""""""""""""""""""""""""""""""""""""""""""
-lua << EOF
-require('mkdnflow').setup({
-    -- Type: boolean. Use default mappings (see '❕Commands and default
-    --     mappings').
-    -- 'false' disables mappings
-    default_mappings = true,        
+"""""""""""""""""""""""""""""""""""""""""""""""""
 
-    -- Type: boolean. Create directories (recursively) if link contains a
-    --     missing directory.
-    -- 'false' prevents missing directories from being created
-    create_dirs = true,             
-
-    -- Type: string. Navigate to links relative to the directory of the first-
-    --     opened file.
-    -- 'current' navigates links relative to currently open file
-    links_relative_to = 'first',    
-
-    -- Type: key-value pair(s). The plugin's features are enabled only when one
-    -- of these filetypes is opened; otherwise, the plugin does nothing. NOTE:
-    -- extensions are converted to lowercase, so any filetypes that convention-
-    -- ally use uppercase characters should be provided here in lowercase.
-    filetypes = {md = true, rmd = true, markdown = true},
-
-    -- Type: boolean. When true, the createLinks() function tries to evaluate
-    --     the string provided as the value of new_file_prefix.
-    -- 'false' results in the value of new_file_prefix being used as a string,
-    --     i.e. it is not evaluated, and the prefix will be invariant.
-    evaluate_prefix = true,
-
-    -- Type: string. Defines the prefix that should be used to create new links.
-    --     This is evaluated at the time createLink() is run, which is to say
-    --     that it's run whenever <CR> is pressed (under the default mappings).
-    --     This makes for many interesting possibilities.
-    new_file_prefix = [[os.date('%Y-%m-%d_')]],
-
-    -- Type: boolean. When true and Mkdnflow is searching for the next/previous
-    --     link in the file, it will wrap to the beginning of the file (if it's
-    --     reached the end) or wrap to the end of the file (if it's reached the
-    --     beginning during a backwards search).
-    wrap_to_beginning = false,
-    wrap_to_end = false
-})
+lua <<EOF
+    vim.o.hidden = true
+    require('nvim-terminal').setup()
 EOF
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" WINDOW PICKER
+"
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+map <silent> <leader>w :lua require('nvim-window').pick()<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" TELESCOPE
+"
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+" Using Lua functions
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
