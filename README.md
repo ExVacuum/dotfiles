@@ -52,7 +52,6 @@ using [COQ](https://github.com/ms-jpq/coq_nvim) completion engine
 - [Eclipse JDT Language Server](https://github.com/eclipse/eclipse.jdt.ls)
 - [OmniSharp Roslyn](https://github.com/omnisharp/omnisharp-roslyn)
 - [Python LSP Server](https://github.com/python-lsp/python-lsp-server)
-- [Remark Language Server](https://github.com/remarkjs/remark-language-server)
 - [rust-analyzer](https://github.com/rust-lang/rust-analyzer)
 - [solargraph](https://solargraph.org/)
 - [Lua Language Server](https://github.com/sumneko/lua-language-server)
