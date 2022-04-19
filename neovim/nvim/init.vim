@@ -32,9 +32,6 @@ call plug#begin(stdpath('data') . '/plugged')
     " Discord Rich Presence
     Plug 'andweeb/presence.nvim'
 
-    " GDB
-    Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
-
     " Alpha Greeter
     Plug 'goolord/alpha-nvim'
 
@@ -73,6 +70,9 @@ call plug#begin(stdpath('data') . '/plugged')
 
     " LaTeX Live Preview
     Plug 'donRaphaco/neotex', { 'for': 'tex' }
+
+    " Git
+    Plug 'tanvirtin/vgit.nvim'
 call plug#end()                        
 
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -120,8 +120,8 @@ let g:tex_flavor = "latex"
 "
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-set termguicolors
 colorscheme nordfox
+set termguicolors
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -151,6 +151,7 @@ EOF
 
 lua << EOF
 
+-- Gutter diagnostic icons
 local signs = { Error = "", Warn = "", Hint = "", Info = "" }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
@@ -200,10 +201,10 @@ table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
 local lspconfig = require'lspconfig'
+lspconfig.vimls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- vimls: vim
 lspconfig.ccls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach}))  -- CCLS: C/C++
 lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- TSSERVER: TypeScript
 lspconfig.cssls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- CSSLS: CSS
-lspconfig.remark_ls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- remark_ls: Markdown
 lspconfig.bashls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- bashls: Bash
 lspconfig.pylsp.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- pylsp: Python
 lspconfig.sumneko_lua.setup(coq.lsp_ensure_capabilities({
@@ -267,14 +268,11 @@ lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities({ -- rust_analyzer: ru
         }
     }
 })) -- rust_analyzer: rust
-lspconfig.java_language_server.setup(coq.lsp_ensure_capabilities({
-    on_attach=on_attach,
-    cmd = {'java-language-server'},
-})) -- java_language_server: Java
 lspconfig.solargraph.setup(coq.lsp_ensure_capabilities({
     on_attach=on_attach,
     filetypes = { "ruby" }
 })) -- solargraph: ruby
+lspconfig.gradle_ls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- gradle_ls
 local pid = vim.fn.getpid()
 local omnisharp_bin = "/opt/omnisharp/run"
 lspconfig.omnisharp.setup(coq.lsp_ensure_capabilities({
@@ -314,6 +312,12 @@ lspconfig.texlab.setup(coq.lsp_ensure_capabilities({
     },
     single_file_support = true
 })) --texlab: LaTeX
+lspconfig.jdtls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- JDT LS (Java)
+lspconfig.yamlls.setup(coq.lsp_ensure_capabilities({on_attach=on_attach})) -- YAML LS (YAML)
+lspconfig.zeta_note.setup(coq.lsp_ensure_capabilities({
+    on_attach=on_attach,
+    cmd = {'/home/si/.cargo/bin/zeta-note'}
+})) -- Zeta-Note (Markdown)
 EOF
 
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -681,7 +685,7 @@ map <silent> <leader>w :lua require('nvim-window').pick()<CR>
 "
 " TELESCOPE
 "
-"""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -694,3 +698,14 @@ nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" GIT INTEGRATION
+"
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+lua << EOF
+require('vgit').setup()
+EOF
+
