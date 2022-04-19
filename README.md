@@ -70,9 +70,20 @@ using [COQ](https://github.com/ms-jpq/coq_nvim) completion engine
 | --------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
 | [Kitty](#kitty) | GPU-accelerated and featureful terminal emulator | [:globe_with_meridians:](https://sw.kovidgoyal.net/kitty/) [:octocat:](https://github.com/kovidgoyal/kitty) |
 
+#### Kitty
+
+Terminal emulator
+
+##### Features
+
+- Mostly cosmetic changes such as nord color scheme and Fira Code font
+
+##### Dependencies
+
+- [Fira Code Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode)
+
 ## Coming Soon
 
-- kitty (terminal)
 - zsh (shell)
     - powerlevel10k (theme)
 - LightDM (Display Manager)
