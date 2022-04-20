@@ -5,11 +5,18 @@
 !/doc/
 !/doc/**/
 # Dotfiles
+!/autorandr/
 !/autorandr/**/
+!/awesome/
 !/awesome/**/
+!/kitty/
 !/kitty/**/
+!/mpd/
 !/mpd/**/
+!/ncmpcpp/
 !/ncmpcpp/**/
+!/nvim/
 !/nvim/**/
+!/zsh/
 !/zsh/**/
 !/.zshenv
