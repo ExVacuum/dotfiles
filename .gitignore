@@ -2,6 +2,7 @@
 # Documentation
 !/README.md
 !/LICENSE
+!/doc/
 !/doc/**/
 # Dotfiles
 !/autorandr/**/
