@@ -1,14 +1,14 @@
-*
+**
 # Documentation
 !README.md
 !LICENSE
-!doc/**
+!doc/**/
 # Dotfiles
-!autorandr/**
-!awesome/**
-!kitty/**
-!mpd/**
-!ncmpcpp/**
-!nvim/**
-!zsh/**
+!autorandr/**/
+!awesome/**/
+!kitty/**/
+!mpd/**/
+!ncmpcpp/**/
+!nvim/**/
+!zsh/**/
 !.zshenv
