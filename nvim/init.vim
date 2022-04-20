@@ -72,7 +72,7 @@ call plug#begin(stdpath('data') . '/plugged')
     Plug 'donRaphaco/neotex', { 'for': 'tex' }
 
     " Git
-    Plug 'tanvirtin/vgit.nvim'
+    " Plug 'tanvirtin/vgit.nvim'
 call plug#end()                        
 
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -705,7 +705,7 @@ nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 "
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-lua << EOF
-require('vgit').setup()
-EOF
+" lua << EOF
+" require('vgit').setup()
+" EOF
 

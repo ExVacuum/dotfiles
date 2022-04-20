@@ -69,6 +69,7 @@ using [COQ](https://github.com/ms-jpq/coq_nvim) completion engine
 | Name            | Description                                      | Project Page(s)                                                                                             |
 | --------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
 | [Kitty](#kitty) | GPU-accelerated and featureful terminal emulator | [:globe_with_meridians:](https://sw.kovidgoyal.net/kitty/) [:octocat:](https://github.com/kovidgoyal/kitty) |
+| [zsh](#zsh)     | Interactive and Extensible Shell                 | [:globe_with_meridians:](https://zsh.sourceforge.io/)                                                       | 
 
 #### Kitty
 
