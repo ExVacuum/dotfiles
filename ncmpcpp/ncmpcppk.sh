@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Save the working directory to return to
 olddir="$PWD"
@@ -7,7 +7,8 @@ cd ~/.config/ncmpcpp
 
 function main() {
     
-    unset COLUMNS LINES
+    echo "" > ./log
+
     # Get terminal width and height
     term_w=$(tput cols)
     term_h=$(tput lines)
@@ -17,19 +18,13 @@ function main() {
 
     # Launch all the other windows in the program
     initialize_layout
-
-    # Resize windows
-    resize
-
+   
     # Display cover art
     ./art.sh
 
-    # Start Window Resize Handling
-    monitor_window_resize
-
     # Finally launch ncmpcpp
-    ncmpcpp -q
-
+    ncmpcpp -q "$@"
+       
     # Clean up once ncmpcpp closes
     cleanup
 }
@@ -42,7 +37,7 @@ function calculate_sizes() {
 
     # Calculate amount to resize the cover panel horizontally
     # and vertically, in order to get a mostly square frame for the cover.
-    cover_resize_amount_h=$(bc -l <<< "-1 * ($ncmpcppk_cover_width - ($term_w / 32))" | xargs printf "%.0f")
+    cover_resize_amount_h=$(bc -l <<< "-1 * ($ncmpcppk_cover_width - ($term_w / 32) + 1)" | xargs printf "%.0f")
     cover_resize_amount_v=$(bc -l <<< "-1 * (($term_h / 2) - $ncmpcppk_cover_height - 1)" | xargs printf "%.0f")
     # Turn -0 into 0
     if [ "$cover_resize_amount_h" == "-0" ]; then
@@ -54,7 +49,9 @@ function calculate_sizes() {
 }
 
 function initialize_layout() {
-    # Use split layout
+    do_resize=0
+    
+    #Use split layout
     kitty @ goto-layout splits
     kitty @ set-window-title "ncmpcppk"
     
@@ -66,6 +63,10 @@ function initialize_layout() {
     # Refocus main ncmpcpp window and show visualization
     kitty @ focus-window -m  "title:^(ncmpcppk)$"
     nohup kitty @ launch --keep-focus --title "ncmpcppk-vis" --location=hsplit cava &> /dev/null
+
+    # Resize windows
+    resize
+    do_resize=1
 }
 
 function resize() {
@@ -84,52 +85,17 @@ function resize() {
 }
 
 function cleanup() {
-    
-    # Close visualization windows
-    kitty @ close-window -m "title:ncmpcppk-cover"
-    kitty @ close-window -m "title:ncmpcppk-lyrics"
-    kitty @ close-window -m "title:ncmpcppk-vis"
-    # Reset terminal size for kitty
-    kitty @ resize-window -a reset
-
-    unset ncmpcppk_monitor
+    monitor_resize=0
     unset ncmpcppk_cover_width
     unset ncmpcppk_cover_height
-}
-
-function monitor_window_resize() {
-    export ncmpcppk_monitor=1
-    {
-        trap 'handle_window_resize' WINCH
-        while [ "$ncmpcppk_monitor" -eq 1 ]; do sleep .1; done;
-    }&
-}
-
-function handle_window_resize() {
-
-    # HACK: get number of windows to ensure layout is set up correctly
-    winnum="$( echo "$(kitty @ ls)" | grep -oP "\"KITTY_WINDOW_ID\": \"\d+\"" | wc -l )"
-    echo "$winnum" > log
-
-    if [ "$winnum" -ne 4 ]; then
-        export ncmpcppk_monitor=0
-        return 0
-    fi
-   
+    
+    # Close visualization windows
+    nohup kitty @ close-window -m "title:ncmpcppk-cover" &> /dev/null
+    nohup kitty @ close-window -m "title:ncmpcppk-lyrics" &> /dev/null
+    nohup kitty @ close-window -m "title:ncmpcppk-vis" &> /dev/null
+    # Reset terminal size for kitty
     kitty @ resize-window -a reset
-
-    unset COLUMNS LINES
-    # Get terminal width and height
-    term_w=$(tput cols)
-    term_h=$(tput lines)
-    term_w=$((term_w * 2))
-    term_h=$((term_h * 2))
-     
-    calculate_sizes
-
-    #resize
-    #./art.sh
+    cd "$olddir"
 }
 
 main
-cd "$olddir"

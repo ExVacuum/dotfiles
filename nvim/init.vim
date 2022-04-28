@@ -50,8 +50,8 @@ call plug#begin(stdpath('data') . '/plugged')
     " fzf
     Plug 'nvim-telescope/telescope.nvim'
 
-    " NightFox Theme
-    Plug 'EdenEast/nightfox.nvim'
+    " gruvbox
+    Plug 'ellisonleao/gruvbox.nvim'
 
     " Remote Work
     Plug 'chipsenkbeil/distant.nvim'
@@ -120,7 +120,7 @@ let g:tex_flavor = "latex"
 "
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-colorscheme nordfox
+colorscheme gruvbox
 set termguicolors
 
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -396,7 +396,7 @@ end
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'nightfox',
+    theme = 'gruvbox',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {'CHADTree', 'vim-plug', 'Trouble', 'terminal'},

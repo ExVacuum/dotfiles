@@ -1,0 +1,331 @@
+git clone https://github.com/fairyglade/ly.git
+git clone --recurse-submodules https://github.com/nullgemm/ly.git
+cd ly
+sudo systemctl enable --now ly.service
+. ~/.config/zsh/.zshrc
+sudo emerge xcb
+sudo emerge -aqv xcb
+sudo emerge -aqv xorg-xauth
+sudo emerge -aqv xauth
+sudo emerge -aqv mcookie
+eselect use pam_u2f
+eselect uses pam_u2f
+eselect uses
+equery uses pam_u2f
+pamu2fcfg -usi > ~/.config/Yubico/u2f_keys
+/etc/pam.d/system-auth
+nvim /etc/pam.d/system-auth
+exit
+ls /etc
+nvim /etc/systemd/journald.conf
+source .zshenv
+rm -rf ly
+gh clone userbin
+gh repo clone userbin
+rm -rf userbin
+gh repo clone userbin .
+cd /mass/userbin
+git status
+git commit -m "Initial Script Dump"
+git push
+cd ~/.local/bin
+git pull
+cd ../../.config/ncmpcpp
+cp ncmpcppk /mass/userbin
+rm /mass/userbin/ncmpcppk
+ln -sf /home/si/.config/ncmpcpp/ncmpcppk ~/.local/bin/
+nvim ncmpcppk
+sudo emerge -avq cava
+nvim /etc/systemd/user/deluged.servic
+nvim /etc/systemd/user/deluged.service
+sudo systemctl enable --now deluged.service
+sudo systemctl disable --now deluged.service
+sudo systemctl stop deluged.service
+sudo systemctl enable --user --now deluged.service
+sudo systemctl enable --user deluged.service
+sudo emerge imagemagick
+kdeconnect-cli
+kdeconnect-cli --list-devices
+kdeconnect-cli --pair -d  bd498fe44803ecff
+kdeconnect-cli --list-available
+kdeconnect-cli --device=bd498fe44803ecff
+kdeconnect-app
+systemctl enable --user --now deluged.service
+sudo emerge -S protonvpn
+sudo emerge -aqv protonvpn-cli
+protonvpn init
+sudo protonvpn init
+protonvpn
+protonvpn c --p2p
+sudo protonvpn c --p2p
+./yubioath-desktop-5.1.0-linux.AppImage
+ls Minecraft\ Soundtrack\ by\ C418\ \(2011-2013\)\ \[FLAC\]
+sudo chown -r si ~/Music 
+sudo chown -R si ~/Music 
+mkdir ~/Music/Artists/C418
+mv Minecraft\ Soundtrack\ by\ C418\ \(2011-2013\)\ \[FLAC\]/* -r ~/Music/Artists/C418
+mv Minecraft\ Soundtrack\ by\ C418\ \(2011-2013\)\ \[FLAC\]/* ~/Music/Artists/C418/
+ls ~/.local/bin
+emerge -s mpdris2
+emerge -s mpdris
+emerge -S mpdris
+nvim ~/.config/zsh/.zshrc
+sudo emerge -aqv mpdris
+sudo emerge -aqv mpd-mpris
+git clone git://github.com/eonpatapon/mpDris2.git\
+
+git clone https://github.com/eonpatapon/mpDris2
+systemctl enable --user --now mpDris2.service
+systemctl --user status mpDris2.service
+journalctl --user -xeu mpDris2.service
+pip
+sudo emerge -S pip
+sudo emerge -aqv pip
+sudo emerge -aqv dev-python/pip
+mkdir -p ~/.config/mpDris2
+cp /usr/local/share/doc/mpdris2/mpDris2.conf ~/.config/mpDris2/mpDris2.conf
+pip install mpd
+emerge -S python-mpd22
+sudo emerge -aqv python-mpd
+;s
+cat art.sh
+systemctl --user start mpDris2.service
+systemctl --user restart mpDris2.service
+gh repo clone lyvi
+cd lyvi
+sudo python ./setup.py
+sudo emerge -aqv glyr
+sudo python ./setup.py install
+sudo emerge -aqv python-dbus python-gobject
+sudo emerge -aqv python-dbus-next python-gobject
+sudo emerge -aqv python-dbus-next pygobject
+sudo emerge -aqv python-dbus-next
+sudo emerge -aqv mpc
+sudo emerge -aqv media-sound/mpc
+ls /tmp
+nvim ~/.config/mpDris2/mpDris2.conf
+equery uses playerctl
+playerctld daemon
+playerctl pause
+cd mpDris2
+./autogen.sh --sysconfdir=/etc
+sudo emerge -aqv mutagen
+systemctl --user daemon-reload
+mutagen
+systemctl restart --user mpDris2.service
+systemctl status --user mpDris2.service
+sudo playerctl -l
+playerctl -l
+playerctl -s metadata 
+playerctl -s metadata mpris:artUrl
+equery uses imagemagick
+feh --bg-fill ~/Pictures/wallpaper/Wolf-Wallpaper-42862.jpg
+nvim ./ncmpcppk
+feh ~/Pictures/wallpaper/Skeleton\ Wallpapers\ 2.jpg
+feh ~/Pictures/wallpaper/Skeleton\ Wallpapers\ 2.jpg &
+maim drip.png
+sudo curl -L https://raw.githubusercontent.com/will8211/unimatrix/master/unimatrix.py -o /usr/local/bin/unimatrix\
+sudo chmod a+rx /usr/local/bin/unimatrix
+unimatrix
+emerge -S julia-mono
+emerge -S juliamono
+playerctl
+playerctl status
+playerctl -p=mpd status
+playerctl -p mpd status
+playerctl -p mpd metadata
+sudo emerge -S noto
+sudo emerge -S noto-fonts
+sudo emerge -qav noto
+rm -rf lyvi mpDris2
+sudo rm -rf lyvi mpDris2
+cd .config
+cd ncmpcpp
+nvim art.sh
+equery uses cava
+nvim ~/.config/cava/config 
+cd ~/.config/ncmpcpp
+./ncmpcppk
+ls .local/bin
+. .zshenv
+cd ..
+cd .local/bin
+echo $PATH
+cd .config/zsh/.zshenv
+nvim .zshrc
+sudo emerge -av xclip
+sudo emerge -av x11-misc/xclip
+maimx
+sl
+cat .xsession-errors
+rm .xsession-errors
+sudo emerge -av mpv
+sudo emerge -av yt-dlp
+mpv "https://www.youtube.com/watch?v=TxJUKGKeiFA"
+sudo emerge -qav nbfc
+sudo emerge -S nbfc
+sudo emerge -s nbfc
+git clone https://github.com/nbfc-linux/nbfc-linux.git
+cd nbfc-linux
+make
+nbfc config --recommend
+sudo emerge -av dmidecode
+sudo nbfc config --recommend
+ls /mass
+nvim .xinitrc
+neofetch
+cd Downloads
+mv json.txt Acer\ Predator\ PH315-52.json
+ls /etc/
+ls /usr/share/
+sudo cp Acer\ Predator\ PH315-52.json /usr/local/share/nbfc/configs/
+sudo systemctl enable --now nbfc_service.service
+systemctl status nbfc_service.service
+nbfc confif
+nbfc config
+nbfc config -r
+sudo nbfc config -r
+sudo nbfc config -l
+sudo nbfc config -l | grep Acer
+nbfc
+nbfc status
+nbfc start
+sudo nbfc config -s Acer\ Predator\ PH315-53
+sudo nbfc start
+sudo nbfc config -s Acer\ Predator\ PH315-52
+sudo systemctl disable nbfc_service.service
+emerge -s stpv
+cd
+rm nbfc-linux -rf
+git clone https://github.com/Naheel-Azawy/stpv
+cd stpv
+sudo make install
+sudo emerge -av ffmpegthumbnailer
+sudo emerge -av exiftool
+cd .config/lf
+cd ~/.config/
+mkdir lf
+cd lf
+cp $GOPATH/src/github.com/gokcehan/lf/etc/lfrc.example ~/.config/lf/lfrc
+curl https://raw.githubusercontent.com/gokcehan/lf/master/etc/lfrc.example -o ~/.config/lf/lfrc
+nvim lfrc
+lf
+sudo emerge -S steam
+sudo emerge -s steam
+sudo eselect repository enable steam-overlay
+emerge --sync
+sudo emerge --oneshot sys-apps/portage
+sudo emerge -av steam-launcher
+emerge -s optimus
+emerge -S optimus
+zgrep "CONFIG_MODULES=" /proc/config.gz
+nvim /etc/modules-load.d/nvidia.conf
+systemctl start systemd-modules-load.service
+sudo systemctl start systemd-modules-load.service
+sudo emerge -S okular
+sudo dispatch-conf
+sudo emerge -av okular
+rm stpv -rf
+git https://github.com/geminis3/envycontrol.git
+git clone https://github.com/geminis3/envycontrol.git
+cd envycontrol
+l
+man pip
+man pip install
+man pip-install
+pip install hlp
+pip install help
+pip install --help
+pip install --user .
+sudo pip uninstall .
+sudo pip uninstall --user .
+sudo pip uninstall envycontrol
+sudo emerge -s envycontrol
+sudo pip install .
+sudo pip install --user .
+nvim ~/.zshenv
+. ~/.zshenv
+envycontrol
+envycontrol --status
+ls /root/.local
+ls /root/.local/
+sudo ls /root/.local/
+sudo lsd /root/.local/bin
+sudo ls /root/.local/bin
+sudo envycontrol
+cd /root
+sudo cd /root
+sudo equery list cava
+sudo equery uses cava
+emerge -S pfetch
+sudo emerge -avq pfetch
+sudo emerge --sync
+sudo emerge -av pfetch
+pfetch
+cava
+mpc stop
+sudo reboot
+ncmpcpp
+[A
+delgue-console
+deluge-console
+sudo emerge -s spotify
+killall spotify
+emerge -s libcurl
+sudo emerge libcurl-debian
+spotify
+sudo emerge --unmerge libcurl-debian
+sudo emerge --unmerge links
+sudo emerge -av --depclean
+cat log
+cat nohup.out 
+cat nohup.out
+cd .config/ncmpcpp
+sudo emerge -av nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+nvim .config/zsh/.zshrc
+nvim .config/ncmpcpp/ncmpcppk.sh
+mpd 
+sudo su
+equery uses mpd
+nvim /etc/portage/package.use/mpd
+sudo emerge mpd
+killall mpd
+nvim .config/mpd/mpd.conf
+mpd
+nvim .config/ncmpcpp
+nvim .config/ncmpcpp/ncmpcppk
+ln -sf /home/si/.config/ncmpcpp/ncmpcppk.sh ~/.local/bin/ncmpcppk
+nvim .config/ncmpcpp/
+nvim /etc/portage/savedconfig/x11-wm/dwm-6.3.h
+nvm
+nvm install node
+nvm use node
+npm install -g bash-language-server
+npm install -g npm@8.8.0
+cat .config/ncmpcpp/log
+ncmpcppk
+cd .config/zsh/
+curl -L git.io/antigen > antigen.zsh
+nvim
+ncpamixer
+sudo emerge -av --unmerge dwm
+cd /mass
+cd projects
+gh repo fork xmonad/xmonad
+gh repo fork xmonad/xmonad-contrib
+git remote
+nvim .config/zsh/
+nvim .zshenv
+mv .antigen .config/zsh/antigen
+export ADOTDIR="$ZDOTDIR/antigen"
+mpv "https://www.youtube.com/watch?v=unqsQJaECv0"
+mpv "https://www.youtube.com/watch?v=80FISSjYYrk"
+ls'\
+l'
+rm .antigen
+rm .antigen -rf
+cd xmonad
+cd /mass/projects/xmonad
+ls
+git submodule add https://github.com/exvacuum/xmonad

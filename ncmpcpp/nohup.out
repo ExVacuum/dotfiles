@@ -1,0 +1,54 @@
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/usr/bin/../lib64/kitty/__main__.py", line 185, in <module>
+    main()
+  File "/usr/bin/../lib64/kitty/__main__.py", line 181, in main
+    func(sys.argv[1:])
+  File "/usr/bin/../lib64/kitty/__main__.py", line 22, in remote_control
+    rc_main(args)
+  File "/usr/bin/../lib64/kitty/kitty/remote_control.py", line 242, in main
+    response = do_io(global_opts.to, send, no_response, response_timeout)
+  File "/usr/bin/../lib64/kitty/kitty/remote_control.py", line 155, in do_io
+    received = io.simple_recv(timeout=response_timeout)
+  File "/usr/bin/../lib64/kitty/kitty/remote_control.py", line 134, in simple_recv
+    read_command_response(self.tty_fd, timeout, ans)
+OSError: [Errno 5] Input/output error
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/usr/bin/../lib64/kitty/__main__.py", line 185, in <module>
+    main()
+  File "/usr/bin/../lib64/kitty/__main__.py", line 181, in main
+    func(sys.argv[1:])
+  File "/usr/bin/../lib64/kitty/__main__.py", line 22, in remote_control
+    rc_main(args)
+  File "/usr/bin/../lib64/kitty/kitty/remote_control.py", line 242, in main
+    response = do_io(global_opts.to, send, no_response, response_timeout)
+  File "/usr/bin/../lib64/kitty/kitty/remote_control.py", line 151, in do_io
+    with io:
+  File "/usr/bin/../lib64/kitty/kitty/utils.py", line 477, in __enter__
+    self.tty_fd, self.original_termios = open_tty(self.read_with_timeout)
+OSError: [Errno 5] Input/output error
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/usr/bin/../lib64/kitty/__main__.py", line 185, in <module>
+    main()
+  File "/usr/bin/../lib64/kitty/__main__.py", line 181, in main
+    func(sys.argv[1:])
+  File "/usr/bin/../lib64/kitty/__main__.py", line 22, in remote_control
+    rc_main(args)
+  File "/usr/bin/../lib64/kitty/kitty/remote_control.py", line 242, in main
+    response = do_io(global_opts.to, send, no_response, response_timeout)
+  File "/usr/bin/../lib64/kitty/kitty/remote_control.py", line 155, in do_io
+    received = io.simple_recv(timeout=response_timeout)
+  File "/usr/bin/../lib64/kitty/kitty/remote_control.py", line 134, in simple_recv
+    read_command_response(self.tty_fd, timeout, ans)
+OSError: [Errno 5] Input/output error
